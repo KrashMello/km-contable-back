@@ -1,0 +1,31 @@
+{
+  "name": "km-contable-back",
+  "version": "1.0.0",
+  "description": "back de km-contable",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/src/index.js",
+    "start:dev": "ts-node-dev --rs --watch --clear src/index.ts",
+    "db:generate": "prisma generate --schema=./src/prisma/scheme.prisma",
+    "db:push": "prisma db push --schema=./src/prisma/scheme.prisma",
+    "db:seed": "ts-node src/prisma/seed.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KrashMello/km-contable-back.git"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "KrashMello",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KrashMello/km-contable-back/issues"
+  },
+  "homepage": "https://github.com/KrashMello/km-contable-back#readme",
+  "dependencies": {
+    "elumian": "^2.0.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0"
+  }
+}

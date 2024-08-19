@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  create_at DateTime @default(now())
+
+  Indebtedness Indebtedness[]
+  Account      Account[]
+}
+
+model Indebtedness {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  create_at DateTime @default(now())
+
+  User  Users   @relation(fields: [userId], references: [id])
+  Debts Debts[]
+}
+
+model Debts {
+  id            Int     @id @default(autoincrement())
+  idebtednessId Int
+  mount         Int
+  description   String
+  paid          Boolean @default(false)
+
+  Indebtedness Indebtedness @relation(fields: [idebtednessId], references: [id])
+}
+
+model Currency {
+  id           Int       @id @default(autoincrement())
+  name         String    @unique
+  abbreviation String
+  Account      Account[]
+}
+
+model Account_type {
+  id      Int       @id @default(autoincrement())
+  name    String
+  Account Account[]
+}
+
+model Account {
+  id             Int    @id @default(autoincrement())
+  name           String
+  userId         Int
+  account_typeId Int
+  currencyId     Int
+
+  User                Users                 @relation(fields: [userId], references: [id])
+  Currency            Currency              @relation(fields: [currencyId], references: [id])
+  Income_and_expenses Income_and_expenses[]
+  Account_type        Account_type          @relation(fields: [account_typeId], references: [id])
+}
+
+model Income_and_expenses {
+  id          Int      @id @default(autoincrement())
+  date_entry  DateTime
+  amount      Float
+  description String
+  accountId   Int
+  typeId      Int
+
+  type_income_and_expenses type_income_and_expenses @relation(fields: [typeId], references: [id])
+  Account                  Account                  @relation(fields: [accountId], references: [id])
+}
+
+model type_income_and_expenses {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  Income_and_expenses Income_and_expenses[]
+}
