@@ -26,10 +26,15 @@ export class Account {
     };
   }
   async getAll(data: { userId: string }) {
-    const accounts = await Elumian.prisma.account.findMany({
+    const result = await Elumian.prisma.account.findMany({
       select: {
         id: true,
         name: true,
+        accountType: {
+          select: {
+            name: true,
+          },
+        },
       },
       where: {
         userId: data.userId,
@@ -37,7 +42,19 @@ export class Account {
     });
     return {
       status: 200,
-      data: accounts,
+      data: result,
+    };
+  }
+  async getAllTypes() {
+    const result = await Elumian.prisma.account_type.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    return {
+      status: 200,
+      data: result,
     };
   }
 }

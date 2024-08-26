@@ -13,8 +13,8 @@ model Users {
   password  String
   create_at DateTime @default(now())
 
-  Indebtedness Indebtedness[]
-  Account      Account[]
+  indebtedness Indebtedness[]
+  account      Account[]
 }
 
 model Indebtedness {
@@ -23,8 +23,8 @@ model Indebtedness {
   name      String
   create_at DateTime @default(now())
 
-  User  Users   @relation(fields: [userId], references: [id])
-  Debts Debts[]
+  user  Users   @relation(fields: [userId], references: [id])
+  debts Debts[]
 }
 
 model Debts {
@@ -34,20 +34,20 @@ model Debts {
   description   String
   paid          Boolean @default(false)
 
-  Indebtedness Indebtedness @relation(fields: [idebtednessId], references: [id])
+  indebtedness Indebtedness @relation(fields: [idebtednessId], references: [id])
 }
 
 model Currency {
   id           Int       @id @default(autoincrement())
   name         String    @unique
   abbreviation String
-  Account      Account[]
+  account      Account[]
 }
 
 model Account_type {
   id      Int       @id @default(autoincrement())
   name    String
-  Account Account[]
+  account Account[]
 }
 
 model Account {
@@ -57,10 +57,10 @@ model Account {
   account_typeId Int
   currencyId     Int
 
-  User                Users                 @relation(fields: [userId], references: [id])
-  Currency            Currency              @relation(fields: [currencyId], references: [id])
-  Income_and_expenses Income_and_expenses[]
-  Account_type        Account_type          @relation(fields: [account_typeId], references: [id])
+  user              Users                 @relation(fields: [userId], references: [id])
+  currency          Currency              @relation(fields: [currencyId], references: [id])
+  incomeAndExpenses Income_and_expenses[]
+  accountType       Account_type          @relation(fields: [account_typeId], references: [id])
 }
 
 model Income_and_expenses {
@@ -71,13 +71,13 @@ model Income_and_expenses {
   accountId   Int
   typeId      Int
 
-  type_income_and_expenses type_income_and_expenses @relation(fields: [typeId], references: [id])
-  Account                  Account                  @relation(fields: [accountId], references: [id])
+  typeIncomeAndExpenses type_income_and_expenses @relation(fields: [typeId], references: [id])
+  account               Account                  @relation(fields: [accountId], references: [id])
 }
 
 model type_income_and_expenses {
   id   Int    @id @default(autoincrement())
   name String
 
-  Income_and_expenses Income_and_expenses[]
+  incomeAndExpenses Income_and_expenses[]
 }

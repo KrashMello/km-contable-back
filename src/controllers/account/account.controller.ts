@@ -40,4 +40,11 @@ export class AccountController {
     const result = await Elumian.Account.getAll(data);
     res.status(result.status).json(result.data);
   }
+  @Get("/types")
+  @ProtecteGuard()
+  @CatchErrors
+  async getAllTypes(req: Request, res: Response): Promise<any> {
+    const result = await Elumian.Account.getAllTypes();
+    res.status(result.status).json(result.data);
+  }
 }

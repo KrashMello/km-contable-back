@@ -3,7 +3,7 @@ import { Elumian } from "elumian/core";
 
 @Service
 export class IncomeAndExpenses {
-  async addIncomeOrExpenses(data: {
+  async addIncomeOrExpense(data: {
     dateEntry: Date;
     amount: number;
     description: string;
@@ -27,19 +27,52 @@ export class IncomeAndExpenses {
       },
     };
   }
-  async getAll(data: { userId: string }) {
-    const accounts = await Elumian.prisma.account.findMany({
+  async getAllIncomes(data: { userId: string }) {
+    const result = await Elumian.prisma.income_and_expenses.findMany({
       select: {
         id: true,
-        name: true,
+        date_entry: true,
+        description: true,
+        amount: true,
       },
       where: {
         userId: data.userId,
+        typeId: 1,
       },
     });
     return {
       status: 200,
-      data: accounts,
+      data: result,
+    };
+  }
+  async getAllExpenses(data: { userId: string }) {
+    const result = await Elumian.prisma.income_and_expenses.findMany({
+      select: {
+        id: true,
+        date_entry: true,
+        description: true,
+        amount: true,
+      },
+      where: {
+        userId: data.userId,
+        typeId: 2,
+      },
+    });
+    return {
+      status: 200,
+      data: result,
+    };
+  }
+  async getTypes() {
+    const result = await Elumian.prisma.type_income_and_expenses.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    return {
+      status: 200,
+      data: result,
     };
   }
 }
