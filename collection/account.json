@@ -1,72 +1,6 @@
 {
-  "name": "km-contable",
+  "name": "account",
   "requests": [
-    {
-      "name": "post login",
-      "url": "{{BASE_URL}}/auth/login",
-      "method": "POST",
-      "params": [],
-      "headers": [
-        {
-          "enabled": true,
-          "data": [
-            "cache-control",
-            "no-cache"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "user-agent",
-            "ATAC/v0.18.0"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "accept",
-            "*/*"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "accept-encoding",
-            "gzip, deflate, br"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "connection",
-            "keep-alive"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "content-type",
-            "application/json"
-          ]
-        }
-      ],
-      "body": {
-        "json": "{\n\"username\": \"krashmello\",\n\"password\": \"1234\"\n}"
-      },
-      "auth": "no_auth",
-      "scripts": {
-        "pre_request_script": null,
-        "post_request_script": null
-      },
-      "settings": {
-        "use_config_proxy": true,
-        "allow_redirects": true,
-        "store_received_cookies": true,
-        "pretty_print_response_content": true,
-        "accept_invalid_certs": false,
-        "accept_invalid_hostnames": false
-      }
-    },
     {
       "name": "get account",
       "url": "{{BASE_URL}}/account/",
@@ -196,8 +130,8 @@
       }
     },
     {
-      "name": "get incomes",
-      "url": "{{BASE_URL}}/incomesAndExpenses/getAllIncomes",
+      "name": "get currency",
+      "url": "{{BASE_URL}}/account/currency",
       "method": "GET",
       "params": [],
       "headers": [
@@ -260,8 +194,8 @@
       }
     },
     {
-      "name": "add income or expense",
-      "url": "{{BASE_URL}}/incomesAndExpenses/",
+      "name": "add account",
+      "url": "{{BASE_URL}}/account/",
       "method": "POST",
       "params": [],
       "headers": [
@@ -316,7 +250,7 @@
         }
       ],
       "body": {
-        "json": "{\n    \"dateEntry\": \"2024-08-26\",\n    \"description\": \"mama\",\n    \"amount\": \"130\",\n    \"typeId\": \"2\",\n    \"accountId\": \"2\"\n}"
+        "json": "{\n\"name\":\"binance\",\n\"accountType\":\"2\",\n\"currencyType\":\"1\"\n}"
       },
       "auth": "no_auth",
       "scripts": {
@@ -333,9 +267,9 @@
       }
     },
     {
-      "name": "get expenses",
-      "url": "{{BASE_URL}}/incomesAndExpenses/getAllExpenses",
-      "method": "GET",
+      "name": "update account",
+      "url": "{{BASE_URL}}/account/",
+      "method": "PUT",
       "params": [],
       "headers": [
         {
@@ -379,137 +313,18 @@
             "x-access-id",
             "{{TOKEN_ACCESS}}"
           ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "content-type",
+            "application/json"
+          ]
         }
       ],
-      "body": "no_body",
-      "auth": "no_auth",
-      "scripts": {
-        "pre_request_script": null,
-        "post_request_script": null
+      "body": {
+        "json": "{\n\"id\":\"2\",\n\"name\":\"Banco de Venezuela Mama\",\n\"accountType\":\"1\",\n\"currencyType\":\"2\"\n}"
       },
-      "settings": {
-        "use_config_proxy": true,
-        "allow_redirects": true,
-        "store_received_cookies": true,
-        "pretty_print_response_content": true,
-        "accept_invalid_certs": false,
-        "accept_invalid_hostnames": false
-      }
-    },
-    {
-      "name": "get expenses and incomes types",
-      "url": "{{BASE_URL}}/incomesAndExpenses/types",
-      "method": "GET",
-      "params": [],
-      "headers": [
-        {
-          "enabled": true,
-          "data": [
-            "cache-control",
-            "no-cache"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "user-agent",
-            "ATAC/v0.18.0"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "accept",
-            "*/*"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "accept-encoding",
-            "gzip, deflate, br"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "connection",
-            "keep-alive"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "x-access-id",
-            "{{TOKEN_ACCESS}}"
-          ]
-        }
-      ],
-      "body": "no_body",
-      "auth": "no_auth",
-      "scripts": {
-        "pre_request_script": null,
-        "post_request_script": null
-      },
-      "settings": {
-        "use_config_proxy": true,
-        "allow_redirects": true,
-        "store_received_cookies": true,
-        "pretty_print_response_content": true,
-        "accept_invalid_certs": false,
-        "accept_invalid_hostnames": false
-      }
-    },
-    {
-      "name": "get all mounts",
-      "url": "{{BASE_URL}}/incomesAndExpenses/getAllMounts",
-      "method": "GET",
-      "params": [],
-      "headers": [
-        {
-          "enabled": true,
-          "data": [
-            "cache-control",
-            "no-cache"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "user-agent",
-            "ATAC/v0.18.0"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "accept",
-            "*/*"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "accept-encoding",
-            "gzip, deflate, br"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "connection",
-            "keep-alive"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "x-access-id",
-            "{{TOKEN_ACCESS}}"
-          ]
-        }
-      ],
-      "body": "no_body",
       "auth": "no_auth",
       "scripts": {
         "pre_request_script": null,
