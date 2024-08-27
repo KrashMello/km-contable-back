@@ -56,4 +56,18 @@ export class IncomeAndExpensesController {
     const result = await Elumian.IncomeAndExpenses.getTypes();
     res.status(result.status).json(result.data);
   }
+  @Get("/getAllMounts")
+  @ProtecteGuard()
+  @CatchErrors
+  async getAllMounts(req: Request, res: Response): Promise<any> {
+    const data = {
+      id: Elumian.crypto.hardDecrypt(
+        Elumian.cache.list.Auth.find(
+          (data: any) => data.id === req.header("x-access-id"),
+        ).data,
+      ).id,
+    };
+    const result = await Elumian.IncomeAndExpenses.getAllMounts(data);
+    res.status(result.status).json(result.data);
+  }
 }
