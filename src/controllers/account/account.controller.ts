@@ -5,6 +5,7 @@ import {
   ProtecteGuard,
   CatchErrors,
   Get,
+  Put,
 } from "elumian/core/decorators";
 import { type Request, type Response } from "express";
 import { accountDataRequest } from "./account.request";
@@ -26,6 +27,20 @@ export class AccountController {
     const result = await Elumian.Account.addAccount(data);
     res.status(result.status).json(result.data);
   }
+  @Put("/")
+  @ProtecteGuard()
+  @DataEntryGuard(accountDataRequest)
+  @CatchErrors
+  async updateAccount(req: Request, res: Response): Promise<any> {
+    const data = req.body;
+    data.userId = Elumian.crypto.hardDecrypt(
+      Elumian.cache.list.Auth.find(
+        (data) => (data.id = req.header("x-access-id")),
+      ).data,
+    ).id;
+    const result = await Elumian.Account.updateAccount(data);
+    res.status(result.status).json(result.data);
+  }
   @Get("/")
   @ProtecteGuard()
   @CatchErrors
@@ -38,6 +53,20 @@ export class AccountController {
       ).id,
     };
     const result = await Elumian.Account.getAll(data);
+    res.status(result.status).json(result.data);
+  }
+  @Get("/currency")
+  @ProtecteGuard()
+  @CatchErrors
+  async getCurrency(req: Request, res: Response): Promise<any> {
+    const data = {
+      id: Elumian.crypto.hardDecrypt(
+        Elumian.cache.list.Auth.find(
+          (data: any) => (data.id = req.header("x-access-id")),
+        ).data,
+      ).id,
+    };
+    const result = await Elumian.Account.getCurrency();
     res.status(result.status).json(result.data);
   }
   @Get("/types")
