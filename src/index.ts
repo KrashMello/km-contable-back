@@ -4,5 +4,6 @@ const whiteList = ["http://localhost:3000"];
 server({
   controllers: modules.controllers,
   services: modules.services,
+  whiteList,
   port: 5000,
 });
