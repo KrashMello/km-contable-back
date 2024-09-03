@@ -9,7 +9,10 @@ export class Auth {
       return Elumian.crypto.hardDecrypt(v.data).username;
     }).filter((v) => v === data.username)[0];
     if (sessionActive) {
-      return { type: "warning", message: "Ya hay una sesion activa" };
+      return {
+        status: 401,
+        message: { type: "warning", message: "Ya hay una sesion activa" },
+      };
     }
     const userData = await Elumian.prisma.users.findUnique({
       select: {
@@ -30,17 +33,29 @@ export class Auth {
       if (comparePassword) {
         delete userData.password;
 
-        return Elumian.cache.singCacheData({
-          key: "Auth",
-          data: userData,
-          encrypted: true,
-          expire: true,
-        });
+        return {
+          status: 200,
+          message: {
+            type: "success",
+            message: Elumian.cache.singCacheData({
+              key: "Auth",
+              data: userData,
+              encrypted: true,
+              expire: true,
+            }),
+          },
+        };
       } else {
-        return { type: "warning", message: "Contraseña invalida" };
+        return {
+          status: 401,
+          message: { type: "warning", message: "Contraseña invalida" },
+        };
       }
     } else {
-      return { type: "warning", message: "nombre de usuario invalido" };
+      return {
+        status: 401,
+        message: { type: "warning", message: "nombre de usuario invalido" },
+      };
     }
   }
 }

@@ -15,6 +15,7 @@ export class AuthController {
   @CatchErrors
   async login(req: Request, res: Response): Promise<any> {
     const data = req.body;
-    res.json(await Elumian.Auth.login(data));
+    const result = await Elumian.Auth.login(data);
+    res.status(result.status).json(result.message);
   }
 }
