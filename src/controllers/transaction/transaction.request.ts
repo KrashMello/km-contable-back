@@ -1,6 +1,6 @@
 import { validationsOptions } from "elumian/core/request";
 
-const IncomeAndExpensesDataOptions: validationsOptions = {
+const TransactionDataOptions: validationsOptions = {
   dateEntry: ["date", "required"],
   description: ["alphaNumeric", "required"],
   amount: ["numeric", "required"],
@@ -8,6 +8,6 @@ const IncomeAndExpensesDataOptions: validationsOptions = {
   typeId: ["numeric", "required"],
 };
 
-export const IncomeAndExpensesDataRequest = {
-  options: IncomeAndExpensesDataOptions,
+export const TransactionDataRequest = {
+  options: TransactionDataOptions,
 };

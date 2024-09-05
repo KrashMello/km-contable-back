@@ -2,10 +2,10 @@ import { AccountController } from "../controllers/account/account.controller";
 import { AuthController } from "../controllers/auth/auth.controller";
 import { Auth } from "../services/auth.service";
 import { Account } from "../services/Acounts.service";
-import { IncomeAndExpensesController } from "../controllers/income_and_expense/income_and_expense.controller";
-import { IncomeAndExpenses } from "../services/income_and_expense.service";
+import { TransactionController } from "../controllers/transaction/transaction.controller";
+import { Transaction } from "../services/transaction.service";
 
 export default {
-  controllers: [AuthController, AccountController, IncomeAndExpensesController],
-  services: [Auth, Account, IncomeAndExpenses],
+  controllers: [AuthController, AccountController, TransactionController],
+  services: [Auth, Account, Transaction],
 };

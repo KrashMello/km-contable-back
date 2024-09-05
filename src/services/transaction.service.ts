@@ -2,15 +2,15 @@ import { Service } from "elumian/core/decorators";
 import { Elumian } from "elumian/core";
 
 @Service
-export class IncomeAndExpenses {
-  async addIncomeOrExpense(data: {
+export class Transaction {
+  async addTransaction(data: {
     dateEntry: Date;
     amount: number;
     description: string;
     accountId: number;
     typeId: number;
   }) {
-    const IncomeOrExpenses = await Elumian.prisma.income_and_expenses.create({
+    const transaction = await Elumian.prisma.transaction.create({
       data: {
         date_entry: new Date(data.dateEntry),
         amount: Number(data.amount),
@@ -23,12 +23,12 @@ export class IncomeAndExpenses {
       status: 200,
       data: {
         type: "success",
-        message: IncomeOrExpenses,
+        message: transaction,
       },
     };
   }
   async getAllIncomes(data: { userId: string }) {
-    const result = await Elumian.prisma.income_and_expenses.findMany({
+    const result = await Elumian.prisma.transaction.findMany({
       select: {
         id: true,
         date_entry: true,
@@ -40,6 +40,11 @@ export class IncomeAndExpenses {
             accountType: {
               select: {
                 name: true,
+              },
+            },
+            currency: {
+              select: {
+                abbreviation: true,
               },
             },
           },
@@ -56,12 +61,27 @@ export class IncomeAndExpenses {
     };
   }
   async getAllExpenses(data: { userId: string }) {
-    const result = await Elumian.prisma.income_and_expenses.findMany({
+    const result = await Elumian.prisma.transaction.findMany({
       select: {
         id: true,
         date_entry: true,
         description: true,
         amount: true,
+        account: {
+          select: {
+            name: true,
+            accountType: {
+              select: {
+                name: true,
+              },
+            },
+            currency: {
+              select: {
+                abbreviation: true,
+              },
+            },
+          },
+        },
       },
       where: {
         userId: data.userId,
@@ -74,13 +94,12 @@ export class IncomeAndExpenses {
     };
   }
   async getAllMounts(data: { userId: string }) {
-    const groupedData = await Elumian.prisma.income_and_expenses.groupBy({
+    const groupedData = await Elumian.prisma.transaction.groupBy({
       by: ["typeId", "accountId"],
       _sum: {
         amount: true,
       },
     });
-
     const accountIds = [
       ...new Set(groupedData.map((group) => group.accountId)),
     ];
@@ -98,7 +117,7 @@ export class IncomeAndExpenses {
       },
     });
 
-    const types = await Elumian.prisma.type_income_and_expenses.findMany({
+    const types = await Elumian.prisma.type_transaction.findMany({
       where: {
         id: {
           in: typeIds,
@@ -123,7 +142,7 @@ export class IncomeAndExpenses {
     };
   }
   async getTypes() {
-    const result = await Elumian.prisma.type_income_and_expenses.findMany({
+    const result = await Elumian.prisma.type_transaction.findMany({
       select: {
         id: true,
         name: true,

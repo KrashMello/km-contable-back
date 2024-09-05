@@ -3,18 +3,18 @@ import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 async function main() {
   const ACCOUNT_TYPE_LISTS = [
-    { name: "corriente".toUpperCase() },
-    { name: "ahorro".toUpperCase() },
-    { name: "efectivo".toUpperCase() },
-    { name: "credito".toUpperCase() },
+    { name: "CORRIENTE".toUpperCase() },
+    { name: "AHORRO".toUpperCase() },
+    { name: "EFECTIVO".toUpperCase() },
+    { name: "CREDITO".toUpperCase() },
   ];
   const CURRENCY_LISTS = [
     { name: "USD", abbreviation: "$" },
-    { name: "bolivares", abbreviation: "Bs" },
+    { name: "BOLIVARES", abbreviation: "Bs." },
   ];
   const TYPE_INCOME_AND_EXPENSES_LISTS = [
-    { name: "igresos" },
-    { name: "egresos" },
+    { name: "IGRESOS" },
+    { name: "GASTOS" },
   ];
   for (let account_type of ACCOUNT_TYPE_LISTS) {
     await prisma.account_type.create({
@@ -27,7 +27,7 @@ async function main() {
     });
   }
   for (let type of TYPE_INCOME_AND_EXPENSES_LISTS) {
-    await prisma.type_income_and_expenses.create({
+    await prisma.type_transaction.create({
       data: type,
     });
   }

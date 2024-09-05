@@ -57,13 +57,13 @@ model Account {
   account_typeId Int
   currencyId     Int
 
-  user              Users                 @relation(fields: [userId], references: [id])
-  currency          Currency              @relation(fields: [currencyId], references: [id])
-  incomeAndExpenses Income_and_expenses[]
-  accountType       Account_type          @relation(fields: [account_typeId], references: [id])
+  user        Users         @relation(fields: [userId], references: [id])
+  currency    Currency      @relation(fields: [currencyId], references: [id])
+  transaction Transaction[]
+  accountType Account_type  @relation(fields: [account_typeId], references: [id])
 }
 
-model Income_and_expenses {
+model Transaction {
   id          Int      @id @default(autoincrement())
   date_entry  DateTime
   amount      Float
@@ -71,13 +71,13 @@ model Income_and_expenses {
   accountId   Int
   typeId      Int
 
-  typeIncomeAndExpenses type_income_and_expenses @relation(fields: [typeId], references: [id])
-  account               Account                  @relation(fields: [accountId], references: [id])
+  typeTransaction type_transaction @relation(fields: [typeId], references: [id])
+  account         Account          @relation(fields: [accountId], references: [id])
 }
 
-model type_income_and_expenses {
+model type_transaction {
   id   Int    @id @default(autoincrement())
   name String
 
-  incomeAndExpenses Income_and_expenses[]
+  transaction Transaction[]
 }

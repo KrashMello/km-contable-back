@@ -7,18 +7,18 @@ import {
   Get,
 } from "elumian/core/decorators";
 import { type Request, type Response } from "express";
-import { IncomeAndExpensesDataRequest } from "./income_and_expense.request";
+import { TransactionDataRequest } from "./transaction.request";
 import { Elumian } from "elumian/core";
 
-@Controller("/incomesAndExpenses")
-export class IncomeAndExpensesController {
+@Controller("/transaction")
+export class TransactionController {
   @Post("/")
   @ProtecteGuard()
-  @DataEntryGuard(IncomeAndExpensesDataRequest)
+  @DataEntryGuard(TransactionDataRequest)
   @CatchErrors
-  async addIncomeOrExpense(req: Request, res: Response): Promise<any> {
+  async addTransaction(req: Request, res: Response): Promise<any> {
     const data = req.body;
-    const result = await Elumian.IncomeAndExpenses.addIncomeOrExpense(data);
+    const result = await Elumian.Transaction.addIncomeOrExpense(data);
     res.status(result.status).json(result.data);
   }
   @Get("/getAllIncomes")
@@ -32,7 +32,7 @@ export class IncomeAndExpensesController {
         ).data,
       ).id,
     };
-    const result = await Elumian.IncomeAndExpenses.getAllIncomes(data);
+    const result = await Elumian.Transaction.getAllIncomes(data);
     res.status(result.status).json(result.data);
   }
   @Get("/getAllExpenses")
@@ -46,14 +46,14 @@ export class IncomeAndExpensesController {
         ).data,
       ).id,
     };
-    const result = await Elumian.IncomeAndExpenses.getAllExpenses(data);
+    const result = await Elumian.Transaction.getAllExpenses(data);
     res.status(result.status).json(result.data);
   }
   @Get("/types")
   @ProtecteGuard()
   @CatchErrors
   async getTypes(req: Request, res: Response): Promise<any> {
-    const result = await Elumian.IncomeAndExpenses.getTypes();
+    const result = await Elumian.Transaction.getTypes();
     res.status(result.status).json(result.data);
   }
   @Get("/getAllMounts")
@@ -67,7 +67,7 @@ export class IncomeAndExpensesController {
         ).data,
       ).id,
     };
-    const result = await Elumian.IncomeAndExpenses.getAllMounts(data);
+    const result = await Elumian.Transaction.getAllMounts(data);
     res.status(result.status).json(result.data);
   }
 }
