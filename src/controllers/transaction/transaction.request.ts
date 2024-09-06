@@ -4,8 +4,7 @@ const TransactionDataOptions: validationsOptions = {
   dateEntry: ["date", "required"],
   description: ["alphaNumeric", "required"],
   amount: ["numeric", "required"],
-  accountId: ["numeric", "required"],
-  typeId: ["numeric", "required"],
+  categoryId: ["numeric", "required"],
 };
 
 export const TransactionDataRequest = {
