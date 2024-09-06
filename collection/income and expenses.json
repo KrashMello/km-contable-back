@@ -3,7 +3,7 @@
   "requests": [
     {
       "name": "get incomes",
-      "url": "{{BASE_URL}}/incomesAndExpenses/getAllIncomes",
+      "url": "{{BASE_URL}}/transaction/getAllIncomes",
       "method": "GET",
       "params": [],
       "headers": [
