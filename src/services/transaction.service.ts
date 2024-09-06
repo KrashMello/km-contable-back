@@ -7,16 +7,14 @@ export class Transaction {
     dateEntry: Date;
     amount: number;
     description: string;
-    accountId: number;
-    typeId: number;
+    categoryId: number;
   }) {
     const transaction = await Elumian.prisma.transaction.create({
       data: {
         date_entry: new Date(data.dateEntry),
         amount: Number(data.amount),
         description: data.description,
-        accountId: Number(data.accountId),
-        typeId: Number(data.typeId),
+        categoryId: Number(data.categoryId),
       },
     });
     return {
@@ -34,10 +32,10 @@ export class Transaction {
         date_entry: true,
         description: true,
         amount: true,
-        account: {
+        category: {
           select: {
             name: true,
-            accountType: {
+            account: {
               select: {
                 name: true,
               },
@@ -52,7 +50,13 @@ export class Transaction {
       },
       where: {
         userId: data.userId,
-        typeId: 1,
+        category: {
+          transactionType: {
+            is: {
+              id: 1,
+            },
+          },
+        },
       },
     });
     return {
