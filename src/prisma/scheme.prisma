@@ -14,7 +14,7 @@ model Users {
   create_at DateTime @default(now())
 
   indebtedness Indebtedness[]
-  account      Account[]
+  category     Category[]
 }
 
 model Indebtedness {
@@ -38,29 +38,38 @@ model Debts {
 }
 
 model Currency {
-  id           Int       @id @default(autoincrement())
-  name         String    @unique
+  id           Int        @id @default(autoincrement())
+  name         String     @unique
   abbreviation String
-  account      Account[]
-}
-
-model Account_type {
-  id      Int       @id @default(autoincrement())
-  name    String
-  account Account[]
+  category     Category[]
 }
 
 model Account {
-  id             Int    @id @default(autoincrement())
-  name           String
-  userId         Int
-  account_typeId Int
-  currencyId     Int
+  id       Int        @id @default(autoincrement())
+  name     String
+  category Category[]
+}
 
-  user        Users         @relation(fields: [userId], references: [id])
-  currency    Currency      @relation(fields: [currencyId], references: [id])
-  transaction Transaction[]
-  accountType Account_type  @relation(fields: [account_typeId], references: [id])
+model Category {
+  id                 Int    @id @default(autoincrement())
+  name               String
+  userId             Int
+  accountId          Int?
+  transaction_typeId Int
+  currencyId         Int?
+
+  user            Users            @relation(fields: [userId], references: [id])
+  currency        Currency?        @relation(fields: [currencyId], references: [id])
+  transaction     Transaction[]
+  account         Account?         @relation(fields: [accountId], references: [id])
+  transactionType transaction_type @relation(fields: [transaction_typeId], references: [id])
+}
+
+model transaction_type {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  category Category[]
 }
 
 model Transaction {
@@ -68,16 +77,7 @@ model Transaction {
   date_entry  DateTime
   amount      Float
   description String
-  accountId   Int
-  typeId      Int
+  categoryId  Int
 
-  typeTransaction type_transaction @relation(fields: [typeId], references: [id])
-  account         Account          @relation(fields: [accountId], references: [id])
-}
-
-model type_transaction {
-  id   Int    @id @default(autoincrement())
-  name String
-
-  transaction Transaction[]
+  category Category @relation(fields: [categoryId], references: [id])
 }
