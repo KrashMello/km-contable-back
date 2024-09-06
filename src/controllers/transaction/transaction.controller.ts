@@ -18,7 +18,7 @@ export class TransactionController {
   @CatchErrors
   async addTransaction(req: Request, res: Response): Promise<any> {
     const data = req.body;
-    const result = await Elumian.Transaction.addIncomeOrExpense(data);
+    const result = await Elumian.Transaction.addTransaction(data);
     res.status(result.status).json(result.data);
   }
   @Get("/getAllIncomes")

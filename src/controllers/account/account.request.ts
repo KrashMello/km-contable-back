@@ -4,7 +4,6 @@ const accountDataOptions: validationsOptions = {
   name: ["alphaNumericSimbols", "required"],
   accountType: ["numeric", "required"],
   currencyType: ["numeric", "required"],
-  id: ["numeric", "required"],
 };
 
 export const accountDataRequest = {

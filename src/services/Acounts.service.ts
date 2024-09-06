@@ -9,7 +9,7 @@ export class Account {
     currencyType: number;
     userId: string;
   }) {
-    const accountData = await Elumian.prisma.account.create({
+    const result = await Elumian.prisma.account.create({
       data: {
         name: data.name,
         account_typeId: Number(data.accountType),
@@ -21,7 +21,7 @@ export class Account {
       status: 200,
       data: {
         type: "success",
-        message: accountData,
+        message: result,
       },
     };
   }
@@ -32,7 +32,7 @@ export class Account {
     id: number;
     userId: string;
   }) {
-    const accountData = await Elumian.prisma.account.update({
+    const result = await Elumian.prisma.account.update({
       data: {
         name: data.name,
         account_typeId: Number(data.accountType),
@@ -47,7 +47,49 @@ export class Account {
       status: 200,
       data: {
         type: "success",
-        message: accountData,
+        message: result,
+      },
+    };
+  }
+  async getAllAccountAmount(data: { userId: string }) {
+    const groupedTransactions = await Elumian.prisma.transaction.groupBy({
+      by: ["accountId", "typeId"],
+      _sum: {
+        amount: true,
+      },
+      where: {
+        account: {
+          userId: data.userId,
+        },
+      },
+    });
+
+    const accountIds = [
+      ...new Set(groupedTransactions.map((t) => t.accountId)),
+    ];
+
+    const accounts = await Elumian.prisma.account.findMany({
+      where: {
+        id: { in: accountIds },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const result = groupedTransactions.map((transaction) => {
+      const account = accounts.find((acc) => acc.id === transaction.accountId);
+      return {
+        account: account ? account.name : null,
+        amount: transaction._sum.amount,
+      };
+    });
+    return {
+      status: 200,
+      data: {
+        type: "success",
+        message: result,
       },
     };
   }

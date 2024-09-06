@@ -69,6 +69,20 @@ export class AccountController {
     const result = await Elumian.Account.getCurrency();
     res.status(result.status).json(result.data);
   }
+  @Get("/getAllAccountAmount")
+  @ProtecteGuard()
+  @CatchErrors
+  async getAllAccountAmount(req: Request, res: Response): Promise<any> {
+    const data = {
+      userId: Elumian.crypto.hardDecrypt(
+        Elumian.cache.list.Auth.find(
+          (data: any) => (data.id = req.header("x-access-id")),
+        ).data,
+      ).id,
+    };
+    const result = await Elumian.Account.getAllAccountAmount(data);
+    res.status(result.status).json(result.data);
+  }
   @Get("/types")
   @ProtecteGuard()
   @CatchErrors
