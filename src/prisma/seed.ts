@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 async function main() {
-  const ACCOUNT_TYPE_LISTS = [
+  const ACCOUNT_LISTS = [
     { name: "CORRIENTE".toUpperCase() },
     { name: "AHORRO".toUpperCase() },
     { name: "EFECTIVO".toUpperCase() },
@@ -12,13 +12,47 @@ async function main() {
     { name: "USD", abbreviation: "$" },
     { name: "BOLIVARES", abbreviation: "Bs." },
   ];
-  const TYPE_INCOME_AND_EXPENSES_LISTS = [
-    { name: "IGRESOS" },
-    { name: "GASTOS" },
+  const TRANSACTION_TYPE_LISTS = [{ name: "IGRESOS" }, { name: "GASTOS" }];
+  const CATEGORY = [
+    {
+      name: "🥞 COMIDA",
+      userId: 1,
+      transaction_typeId: 2,
+      accountId: null,
+      currencyId: null,
+    },
+    {
+      name: "🚕 TRASNPORTE",
+      userId: 1,
+      transaction_typeId: 2,
+      accountId: null,
+      currencyId: null,
+    },
+    {
+      name: "👕 ROPA",
+      userId: 1,
+      transaction_typeId: 2,
+      accountId: null,
+      currencyId: null,
+    },
+    {
+      name: "💊 SALUD",
+      userId: 1,
+      transaction_typeId: 2,
+      accountId: null,
+      currencyId: null,
+    },
+    {
+      name: "🌐 OTROS",
+      userId: 1,
+      transaction_typeId: 2,
+      accountId: null,
+      currencyId: null,
+    },
   ];
-  for (let account_type of ACCOUNT_TYPE_LISTS) {
-    await prisma.account_type.create({
-      data: account_type,
+  for (let account of ACCOUNT_LISTS) {
+    await prisma.account.create({
+      data: account,
     });
   }
   for (let currency of CURRENCY_LISTS) {
@@ -26,8 +60,8 @@ async function main() {
       data: currency,
     });
   }
-  for (let type of TYPE_INCOME_AND_EXPENSES_LISTS) {
-    await prisma.type_transaction.create({
+  for (let type of TRANSACTION_TYPE_LISTS) {
+    await prisma.transaction_type.create({
       data: type,
     });
   }
@@ -37,6 +71,9 @@ async function main() {
       password: bcrypt.hashSync("1234", 10),
     },
   });
+  for (let category of CATEGORY) {
+    await prisma.category.create({ data: category });
+  }
 }
 main()
   .then(async () => {
