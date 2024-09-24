@@ -53,7 +53,7 @@ export class TransactionController {
   @ProtecteGuard()
   @CatchErrors
   async getTypes(req: Request, res: Response): Promise<any> {
-    const result = await Elumian.Transaction.getTypes();
+    const result = await Elumian.category.getTransacctionType();
     res.status(result.status).json(result.data);
   }
   @Get("/getAllMounts")

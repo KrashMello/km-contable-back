@@ -8,6 +8,7 @@ export class Transaction {
     amount: number;
     description: string;
     categoryId: number;
+    categoryDebitId: number;
   }) {
     const transaction = await Elumian.prisma.transaction.create({
       data: {
@@ -15,6 +16,9 @@ export class Transaction {
         amount: Number(data.amount),
         description: data.description,
         categoryId: Number(data.categoryId),
+        categoryDebitId: data.categoryDebitId
+          ? Number(data.categoryDebitId)
+          : null,
       },
     });
     return {
@@ -35,7 +39,7 @@ export class Transaction {
         category: {
           select: {
             name: true,
-            account: {
+            transactionType: {
               select: {
                 name: true,
               },
@@ -49,12 +53,10 @@ export class Transaction {
         },
       },
       where: {
-        userId: data.userId,
         category: {
-          transactionType: {
-            is: {
-              id: 1,
-            },
+          is: {
+            userId: data.userId,
+            transaction_typeId: 1,
           },
         },
       },
@@ -71,10 +73,10 @@ export class Transaction {
         date_entry: true,
         description: true,
         amount: true,
-        account: {
+        category: {
           select: {
             name: true,
-            accountType: {
+            transactionType: {
               select: {
                 name: true,
               },
@@ -88,8 +90,12 @@ export class Transaction {
         },
       },
       where: {
-        userId: data.userId,
-        typeId: 2,
+        category: {
+          is: {
+            userId: data.userId,
+            transaction_typeId: 2,
+          },
+        },
       },
     });
     return {
@@ -98,55 +104,19 @@ export class Transaction {
     };
   }
   async getAllMounts(data: { userId: string }) {
-    const groupedData = await Elumian.prisma.transaction.groupBy({
-      by: ["typeId", "accountId"],
-      _sum: {
-        amount: true,
-      },
-    });
-    const accountIds = [
-      ...new Set(groupedData.map((group) => group.accountId)),
-    ];
-    const typeIds = [...new Set(groupedData.map((group) => group.typeId))];
-
-    const accounts = await Elumian.prisma.account.findMany({
-      where: {
-        id: {
-          in: accountIds,
-        },
-      },
+    const result = await Elumian.prisma.vwAllAmountPerIncome.findMany({
       select: {
-        id: true,
+        totalAmount: true,
         name: true,
       },
     });
-
-    const types = await Elumian.prisma.type_transaction.findMany({
-      where: {
-        id: {
-          in: typeIds,
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
-
-    const result = groupedData.map((group) => ({
-      totalAmount: group._sum.amount,
-      accountName:
-        accounts.find((account) => account.id === group.accountId)?.name ||
-        null,
-      typeName: types.find((type) => type.id === group.typeId)?.name || null,
-    }));
     return {
       status: 200,
       data: result,
     };
   }
   async getTypes() {
-    const result = await Elumian.prisma.type_transaction.findMany({
+    const result = await Elumian.prisma.transaction_type.findMany({
       select: {
         id: true,
         name: true,
