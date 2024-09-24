@@ -1,9 +1,81 @@
 {
-  "name": "transaction",
+  "name": "category",
   "requests": [
     {
-      "name": "get incomes",
-      "url": "{{BASE_URL}}/transaction/getAllIncomes",
+      "name": "get category",
+      "url": "{{BASE_URL}}/category/",
+      "method": "GET",
+      "params": [
+        {
+          "enabled": true,
+          "data": [
+            "transactionType",
+            "1"
+          ]
+        }
+      ],
+      "headers": [
+        {
+          "enabled": true,
+          "data": [
+            "cache-control",
+            "no-cache"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "user-agent",
+            "ATAC/v0.18.0"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "accept",
+            "*/*"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "accept-encoding",
+            "gzip, deflate, br"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "connection",
+            "keep-alive"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "x-access-id",
+            "{{TOKEN_ACCESS}}"
+          ]
+        }
+      ],
+      "body": "no_body",
+      "auth": "no_auth",
+      "scripts": {
+        "pre_request_script": null,
+        "post_request_script": null
+      },
+      "settings": {
+        "use_config_proxy": true,
+        "allow_redirects": true,
+        "store_received_cookies": true,
+        "pretty_print_response_content": true,
+        "accept_invalid_certs": false,
+        "accept_invalid_hostnames": false
+      }
+    },
+    {
+      "name": "get account",
+      "url": "{{BASE_URL}}/category/account",
       "method": "GET",
       "params": [],
       "headers": [
@@ -66,8 +138,8 @@
       }
     },
     {
-      "name": "get expenses",
-      "url": "{{BASE_URL}}/transaction/getAllExpenses",
+      "name": "get Currency",
+      "url": "{{BASE_URL}}/category/currency",
       "method": "GET",
       "params": [],
       "headers": [
@@ -130,8 +202,8 @@
       }
     },
     {
-      "name": "get expenses and incomes types",
-      "url": "{{BASE_URL}}/incomesAndExpenses/types",
+      "name": "get transaction type",
+      "url": "{{BASE_URL}}/category/transactionType",
       "method": "GET",
       "params": [],
       "headers": [
@@ -194,72 +266,8 @@
       }
     },
     {
-      "name": "get all mounts",
-      "url": "{{BASE_URL}}/transaction/getAllMounts",
-      "method": "GET",
-      "params": [],
-      "headers": [
-        {
-          "enabled": true,
-          "data": [
-            "cache-control",
-            "no-cache"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "user-agent",
-            "ATAC/v0.18.0"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "accept",
-            "*/*"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "accept-encoding",
-            "gzip, deflate, br"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "connection",
-            "keep-alive"
-          ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "x-access-id",
-            "{{TOKEN_ACCESS}}"
-          ]
-        }
-      ],
-      "body": "no_body",
-      "auth": "no_auth",
-      "scripts": {
-        "pre_request_script": null,
-        "post_request_script": null
-      },
-      "settings": {
-        "use_config_proxy": true,
-        "allow_redirects": true,
-        "store_received_cookies": true,
-        "pretty_print_response_content": true,
-        "accept_invalid_certs": false,
-        "accept_invalid_hostnames": false
-      }
-    },
-    {
-      "name": "add income or expense",
-      "url": "{{BASE_URL}}/transaction/",
+      "name": "create",
+      "url": "{{BASE_URL}}/category",
       "method": "POST",
       "params": [],
       "headers": [
@@ -301,20 +309,20 @@
         {
           "enabled": true,
           "data": [
-            "x-access-id",
-            "{{TOKEN_ACCESS}}"
+            "content-type",
+            "application/json"
           ]
         },
         {
           "enabled": true,
           "data": [
-            "content-type",
-            "application/json"
+            "x-access-id",
+            "{{TOKEN_ACCESS}}"
           ]
         }
       ],
       "body": {
-        "json": "{\n    \"dateEntry\": \"2024-08-26\",\n    \"description\": \"ropa ferragamo\",\n    \"amount\": \"500\",\n    \"categoryId\": \"1\"\n}"
+        "json": "{\n\"name\":\"Banco Venezuela mama\",\n\"accountId\":\"1\",\n\"transactionTypeId\":\"1\",\n\"currencyId\":\"2\"\n}"
       },
       "auth": "no_auth",
       "scripts": {
