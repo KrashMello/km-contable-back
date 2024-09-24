@@ -50,9 +50,9 @@ async function main() {
       currencyId: null,
     },
   ];
-  for (let account of ACCOUNT_LISTS) {
+  for (let account_type of ACCOUNT_TYPE_LISTS) {
     await prisma.account.create({
-      data: account,
+      data: account_type,
     });
   }
   for (let currency of CURRENCY_LISTS) {
@@ -60,7 +60,7 @@ async function main() {
       data: currency,
     });
   }
-  for (let type of TRANSACTION_TYPE_LISTS) {
+  for (let type of TYPE_INCOME_AND_EXPENSES_LISTS) {
     await prisma.transaction_type.create({
       data: type,
     });
@@ -69,6 +69,28 @@ async function main() {
     data: {
       username: "krashmello",
       password: bcrypt.hashSync("1234", 10),
+      category: {
+        create: [
+          {
+            name: "ROPA",
+            accountId: null,
+            transaction_typeId: 2,
+            currencyId: null,
+          },
+          {
+            name: "COMIDA",
+            accountId: null,
+            transaction_typeId: 2,
+            currencyId: null,
+          },
+          {
+            name: "OTROS",
+            accountId: null,
+            transaction_typeId: 2,
+            currencyId: null,
+          },
+        ],
+      },
     },
   });
   for (let category of CATEGORY) {
