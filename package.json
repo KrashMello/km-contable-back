@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/src/index.js",
-    "start:dev": "ts-node-dev --rs --watch --clear src/index.ts",
+    "start:dev": "ts-node-dev --rs --watch --clear -r tsconfig-paths/register src/index.ts",
     "db:generate": "prisma generate --schema=./src/prisma/scheme.prisma",
     "db:push": "prisma db push --schema=./src/prisma/scheme.prisma",
     "db:seed": "ts-node src/prisma/seed.ts"
@@ -27,6 +27,7 @@
     "cors": "^2.8.5",
     "elumian": "2.0.6",
     "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0"
   }
 }
