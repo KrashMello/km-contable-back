@@ -314,7 +314,7 @@
         }
       ],
       "body": {
-        "json": "{\n    \"dateEntry\": \"2024-08-26\",\n    \"description\": \"ropa ferragamo\",\n    \"amount\": \"500\",\n    \"categoryId\": \"1\"\n}"
+        "json": "{\n    \"dateEntry\": \"2024-08-26\",\n    \"description\": \"platica pal buche\",\n    \"amount\": \"2000\",\n    \"categoryId\": \"6\"\n}"
       },
       "auth": "no_auth",
       "scripts": {
