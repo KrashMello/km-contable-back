@@ -104,10 +104,9 @@ export class Transaction {
     };
   }
   async getAllMounts(data: { userId: string }) {
-    const result = await Elumian.prisma.vwAllAmountPerIncome.findMany({
-      select: {
-        totalAmount: true,
-        name: true,
+    const result = await Elumian.prisma.vw_all_amount_per_income.findMany({
+      where: {
+        userId: data.userId,
       },
     });
     return {
