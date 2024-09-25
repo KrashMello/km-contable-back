@@ -84,7 +84,14 @@ model Transaction {
   category Category @relation(fields: [categoryId], references: [id])
 }
 
-view vwAllAmountPerIncome {
-  totalAmount Int
-  name        String @id
+view vw_all_amount_per_income {
+  total_amount Int
+  name         String @unique
+  userId       Int
+}
+
+view vw_all_amount_per_expense {
+  total_amount Int
+  name         String @unique
+  userId       Int
 }

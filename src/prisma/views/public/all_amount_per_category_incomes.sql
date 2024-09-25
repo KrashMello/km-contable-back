@@ -19,10 +19,10 @@ create view vw_all_amount_per_income as SELECT
             cc.transaction_typeId = 2
          and tt.categoryDebitId = c.id
     ) AS total_amount,
-    c.name 
+    c.name,
+    c.userId
 FROM 
     "Transaction" AS t 
 RIGHT JOIN 
     Category c ON c.id = t.categoryId 
     where c.transaction_typeId = 1
-
