@@ -103,8 +103,27 @@ export class Transaction {
       data: result,
     };
   }
-  async getAllMounts(data: { userId: string }) {
+  async getAllMountsIncomes(data: { userId: string }) {
     const result = await Elumian.prisma.vw_all_amount_per_income.findMany({
+      select: {
+        total_amount: true,
+        name: true,
+      },
+      where: {
+        userId: data.userId,
+      },
+    });
+    return {
+      status: 200,
+      data: result,
+    };
+  }
+  async getAllMountsExpenses(data: { userId: string }) {
+    const result = await Elumian.prisma.vw_all_amount_per_expense.findMany({
+      select: {
+        total_amount: true,
+        name: true,
+      },
       where: {
         userId: data.userId,
       },

@@ -56,10 +56,10 @@ export class TransactionController {
     const result = await Elumian.category.getTransacctionType();
     res.status(result.status).json(result.data);
   }
-  @Get("/getAllMounts")
+  @Get("/getAllMountsIncomes")
   @ProtecteGuard()
   @CatchErrors
-  async getAllMounts(req: Request, res: Response): Promise<any> {
+  async getAllMountsIncomes(req: Request, res: Response): Promise<any> {
     const data = {
       id: Elumian.crypto.hardDecrypt(
         Elumian.cache.list.Auth.find(
@@ -67,7 +67,21 @@ export class TransactionController {
         ).data,
       ).id,
     };
-    const result = await Elumian.Transaction.getAllMounts(data);
+    const result = await Elumian.Transaction.getAllMountsIncomes(data);
+    res.status(result.status).json(result.data);
+  }
+  @Get("/getAllMountsExpenses")
+  @ProtecteGuard()
+  @CatchErrors
+  async getAllMountsExpenses(req: Request, res: Response): Promise<any> {
+    const data = {
+      id: Elumian.crypto.hardDecrypt(
+        Elumian.cache.list.Auth.find(
+          (data: any) => data.id === req.header("x-access-id"),
+        ).data,
+      ).id,
+    };
+    const result = await Elumian.Transaction.getAllMountsExpenses(data);
     res.status(result.status).json(result.data);
   }
 }
