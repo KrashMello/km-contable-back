@@ -1,5 +1,5 @@
 create view vw_all_amount_per_expense as SELECT 
-    sum(t.amount) AS total_amount,
+    COALESCE(sum(t.amount),0) AS total_amount,
     c.name,
     c.userId
 FROM 
@@ -7,4 +7,4 @@ FROM
 RIGHT JOIN 
     Category c ON c.id = t.categoryId 
     where c.transaction_typeId = 2
-    group by c.currencyId;
+    group by c.id;
