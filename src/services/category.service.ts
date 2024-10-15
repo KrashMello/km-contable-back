@@ -10,7 +10,6 @@ export class Category {
     currencyId: string;
     userId: string;
   }) {
-    console.log(data);
     const result = await Elumian.prisma.category.create({
       data: {
         name: data.name,
@@ -30,6 +29,7 @@ export class Category {
       select: {
         id: true,
         name: true,
+        account: true,
       },
       where: {
         userId: data.userId,
