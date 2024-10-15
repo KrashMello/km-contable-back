@@ -27,4 +27,5 @@ FROM
   RIGHT JOIN Category c ON c.id = t.categoryId
 where
   c.transaction_typeId = 1
-  group by c.accountId
+group by
+  c.id
