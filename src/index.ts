@@ -1,9 +1,7 @@
-import modules from "./modules/index";
-import { server } from "elumian/server";
-const whiteList = "*";
-server({
-  controllers: modules.controllers,
-  services: modules.services,
-  whiteList,
-  port: 5000,
+import { Server } from "elumian/core";
+import { modules } from "./modules";
+Server.setConfig({
+	port: 3000,
 });
+Server.chargeModules(modules);
+Server.start();
