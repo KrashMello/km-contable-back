@@ -8,90 +8,79 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
+model users {
+  id        Int    @id @default(autoincrement())
+  username  String @unique
+  email     String @unique
   password  String
-  create_at DateTime @default(now())
+  status_id Int
 
-  indebtedness Indebtedness[]
-  category     Category[]
+  status     status       @relation(fields: [status_id], references: [id])
+  wallets    wallets[]
+  categories categories[]
 }
 
-model Indebtedness {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  name      String
-  create_at DateTime @default(now())
-
-  user  Users   @relation(fields: [userId], references: [id])
-  debts Debts[]
-}
-
-model Debts {
-  id            Int     @id @default(autoincrement())
-  idebtednessId Int
-  mount         Int
-  description   String
-  paid          Boolean @default(false)
-
-  indebtedness Indebtedness @relation(fields: [idebtednessId], references: [id])
-}
-
-model Currency {
-  id           Int        @id @default(autoincrement())
-  name         String     @unique
-  abbreviation String
-  category     Category[]
-}
-
-model Account {
-  id       Int        @id @default(autoincrement())
-  name     String
-  category Category[]
-}
-
-model Category {
-  id                 Int    @id @default(autoincrement())
-  name               String
-  userId             Int
-  accountId          Int?
-  transaction_typeId Int
-  currencyId         Int?
-
-  user            Users            @relation(fields: [userId], references: [id])
-  currency        Currency?        @relation(fields: [currencyId], references: [id])
-  transaction     Transaction[]
-  account         Account?         @relation(fields: [accountId], references: [id])
-  transactionType transaction_type @relation(fields: [transaction_typeId], references: [id])
-}
-
-model transaction_type {
+model status {
   id   Int    @id @default(autoincrement())
   name String
 
-  category Category[]
+  users users[]
 }
 
-model Transaction {
-  id              Int      @id @default(autoincrement())
-  date_entry      DateTime
-  amount          Float
-  description     String
-  categoryId      Int
-  categoryDebitId Int?
+model currencies {
+  id           Int    @id @default(autoincrement())
+  name         String
+  abbreviation String
 
-  category Category @relation(fields: [categoryId], references: [id])
+  wallets wallets[]
 }
 
-view vw_all_amount_per_income {
-  total_amount Int
-  name         String @unique
-  userId       Int
+model account_type {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  wallets wallets[]
 }
 
-view vw_all_amount_per_expense {
-  total_amount Int
-  name         String @unique
-  userId       Int
+model wallets {
+  id              Int    @id @default(autoincrement())
+  name            String
+  user_id         Int
+  account_type_id Int
+  currency_id     Int
+
+  currencies    currencies     @relation(fields: [currency_id], references: [id])
+  account_types account_type   @relation(fields: [account_type_id], references: [id])
+  users         users          @relation(fields: [user_id], references: [id])
+  transactions  transactions[]
+}
+
+model transaction_types {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  categories categories[]
+}
+
+model categories {
+  id                  Int     @id @default(autoincrement())
+  user_id             Int?
+  transaction_type_id Int
+  name                String
+  is_global           Boolean
+
+  users             users?            @relation(fields: [user_id], references: [id])
+  transaction_types transaction_types @relation(fields: [transaction_type_id], references: [id])
+  transactions      transactions[]
+}
+
+model transactions {
+  id          Int        @id @default(autoincrement())
+  category_id Int
+  wallet_id   Int
+  date        DateTime
+  amount      Float
+  description String
+  categories  categories @relation(fields: [category_id], references: [id])
+  wallets     wallets    @relation(fields: [wallet_id], references: [id])
 }
