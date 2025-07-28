@@ -20,8 +20,19 @@ export class ValidateUserMiddleware {
 					type: "ERROR",
 					message: "token is required",
 				});
-			const { id } = Elumian.crypto.hardDecrypt(token);
-			request.set("user_id", id);
+			if (!Elumian.cache.verifyId("Auth", token))
+				HttpExceptions({
+					status: 401,
+					type: "ERROR",
+					message: "token is invalid",
+				});
+			const tokenData = Elumian.cache.getData(
+				"Auth",
+				token,
+			);
+			const { id } = Elumian.crypto.hardDecrypt(tokenData);
+			request.user_id = id;
+			return true;
 		}
 	}
 }
