@@ -1,3 +1,4 @@
+import { AccountTypesModule } from "./account_types/account_types.module";
 import { AuthModule } from "./auth/auth.module";
 import { CurrenciesModule } from "./currencies/currencies.module";
 import { UsersModule } from "./users/users.module";
@@ -8,4 +9,5 @@ export const modules = [
 	UsersModule,
 	WalletsModule,
 	CurrenciesModule,
+	AccountTypesModule,
 ];
