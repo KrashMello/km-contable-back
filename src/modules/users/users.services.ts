@@ -57,7 +57,7 @@ export class Users {
 			const max_users = await this.count({ search });
 			data.maxpage = Math.ceil(max_users / limit) - 1;
 			data.page = page;
-		} else if (page) {
+		} else if (limit) {
 			queryOptions.take = limit;
 		}
 		data.users =
