@@ -69,7 +69,7 @@ export class AccountTypes {
 			queryOptions.take = limit;
 		}
 		data.account_types =
-			await Elumian.prisma.account_types.findMany(
+			await Elumian.prisma.account_type.findMany(
 				queryOptions,
 			);
 		return {
@@ -101,7 +101,7 @@ export class AccountTypes {
 			},
 		};
 		const message =
-			await Elumian.prisma.account_types.findFirst(
+			await Elumian.prisma.account_type.findFirst(
 				queryOptions,
 			);
 		return {
