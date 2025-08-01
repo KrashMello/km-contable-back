@@ -1,9 +1,94 @@
 {
-  "name": "currencies",
+  "name": "categories",
   "requests": [
     {
       "name": "find all",
-      "url": "{{BASE_URL}}/currencies",
+      "url": "{{BASE_URL}}/categories/",
+      "method": "GET",
+      "params": [],
+      "headers": [
+        {
+          "enabled": true,
+          "data": [
+            "cache-control",
+            "no-cache"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "user-agent",
+            "ATAC/v0.18.1"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "accept",
+            "*/*"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "accept-encoding",
+            "gzip, deflate, br"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "connection",
+            "keep-alive"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "km-access-token",
+            "{{TOKEN}}"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "header",
+            "value"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "header",
+            "value"
+          ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "header",
+            "value"
+          ]
+        }
+      ],
+      "body": "no_body",
+      "auth": "no_auth",
+      "scripts": {
+        "pre_request_script": null,
+        "post_request_script": null
+      },
+      "settings": {
+        "use_config_proxy": true,
+        "allow_redirects": true,
+        "store_received_cookies": true,
+        "pretty_print_response_content": true,
+        "accept_invalid_certs": false,
+        "accept_invalid_hostnames": false
+      }
+    },
+    {
+      "name": "find one",
+      "url": "{{BASE_URL}}/categories/1",
       "method": "GET",
       "params": [],
       "headers": [
@@ -66,9 +151,9 @@
       }
     },
     {
-      "name": "find one",
-      "url": "{{BASE_URL}}/currencies/1",
-      "method": "GET",
+      "name": "create",
+      "url": "{{BASE_URL}}/categories/",
+      "method": "POST",
       "params": [],
       "headers": [
         {
@@ -112,9 +197,18 @@
             "km-access-token",
             "{{TOKEN}}"
           ]
+        },
+        {
+          "enabled": true,
+          "data": [
+            "content-type",
+            "application/json"
+          ]
         }
       ],
-      "body": "no_body",
+      "body": {
+        "json": "{\n    \"name\": \"test\",\n    \"transaction_type_id\":\"1\"\n}\n"
+      },
       "auth": "no_auth",
       "scripts": {
         "pre_request_script": null,
