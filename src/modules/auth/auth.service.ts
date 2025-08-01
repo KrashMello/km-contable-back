@@ -10,18 +10,6 @@ export class Auth {
 		password: string;
 	}) {
 		const { username, password } = data;
-		const sessions = Elumian.cache.list["Sessions"];
-		const userloging = sessions
-			? sessions.find(
-					(session) => session.data.username === username,
-				)
-			: null;
-		if (userloging)
-			HttpExceptions({
-				status: 401,
-				type: "ERROR",
-				message: "user is already logged in",
-			});
 		const credentials =
 			await Elumian.Users.credentials(username);
 		if (!bcrypt.compare(password, credentials))
@@ -35,13 +23,18 @@ export class Auth {
 		});
 		await Elumian.cache.singData({
 			key: "Sessions",
-			data: { username },
+			field: username,
+			data: true,
+			ttl: 3600,
 		});
 		const token = await Elumian.cache.singData({
 			key: "Auth",
 			data: userData.message,
-			encrypted: true,
-		}).id;
+			encrypted: {
+				unsafe: true,
+			},
+			ttl: 3600,
+		});
 		return {
 			status: 200,
 			type: "SUCCESS",
