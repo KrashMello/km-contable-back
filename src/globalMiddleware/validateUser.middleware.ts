@@ -4,7 +4,7 @@ import { Elumian } from "elumian/core";
 
 @Middleware
 export class ValidateUserMiddleware {
-	init(contex) {
+	async init(contex) {
 		const { handler, request, response } = contex;
 		//@ts-ignore
 		const isPublic = Reflect.getMetadata(
@@ -20,17 +20,24 @@ export class ValidateUserMiddleware {
 					type: "ERROR",
 					message: "token is required",
 				});
-			if (!Elumian.cache.verifyId("Auth", token))
+			const verifyId = await Elumian.cache.verifyId(
+				"Auth",
+				token,
+			);
+			if (!verifyId)
 				HttpExceptions({
 					status: 401,
 					type: "ERROR",
 					message: "token is invalid",
 				});
-			const tokenData = Elumian.cache.getData(
+			const tokenData = await Elumian.cache.getData(
 				"Auth",
 				token,
 			);
-			const { id } = Elumian.crypto.hardDecrypt(tokenData);
+			const { id } = Elumian.crypto.hardDecrypt(
+				tokenData,
+				true,
+			);
 			request.user_id = id;
 			return true;
 		}
