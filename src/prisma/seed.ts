@@ -13,7 +13,7 @@ async function main() {
 		{ name: "BOLIVARES", abbreviation: "Bs." },
 	];
 	const TRANSACTION_TYPE_LISTS = [
-		{ name: "IGRESOS" },
+		{ name: "INGRESOS" },
 		{ name: "GASTOS" },
 	];
 	const CATEGORY_LISTS = [

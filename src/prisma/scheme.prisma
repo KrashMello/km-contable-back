@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -18,6 +18,15 @@ model users {
   status     status       @relation(fields: [status_id], references: [id])
   wallets    wallets[]
   categories categories[]
+  api_keys   api_keys[]
+}
+
+model api_keys {
+  id      Int    @id @default(autoincrement())
+  user_id Int
+  code    String @unique
+
+  users users @relation(fields: [user_id], references: [id])
 }
 
 model status {
