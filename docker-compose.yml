@@ -1,9 +1,23 @@
 version: "3.9"
 services:
   redis-contable:
-    name: "redis-contable"
     image: redis:8.0.3
-    container_name: redis
-    restart: always
+    container_name: redis-contable
+    restart: "no"
     ports:
       - 6379:6379
+  postgres-contable:
+    image: postgres:15
+    container_name: postgres-contable
+    restart: "no"
+    environment:
+      POSTGRES_USER: master
+      POSTGRES_PASSWORD: luian
+      POSTGRES_DB: contable
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-contable-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-contable-data:
