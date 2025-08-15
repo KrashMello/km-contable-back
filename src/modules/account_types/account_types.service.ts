@@ -1,9 +1,11 @@
 import { Service } from "elumian/common/decorators";
 import { Prisma } from "@prisma/client";
-import { Elumian } from "elumian/core";
 import { HttpExceptions } from "elumian/common/exceptions";
-@Service
+import { PrismaService } from "../prisma/prisma.service";
+
+@Service()
 export class AccountTypes {
+	constructor(private prisma: PrismaService) {}
 	async count(args: { search: string }) {
 		const { search } = args;
 		const queryOptions: Prisma.account_typeCountArgs = {
@@ -21,7 +23,7 @@ export class AccountTypes {
 				],
 			},
 		};
-		return await Elumian.prisma.account_types.count(
+		return await this.prisma.account_type.count(
 			queryOptions,
 		);
 	}
@@ -40,7 +42,7 @@ export class AccountTypes {
 			where: {},
 		};
 		const data: {
-			account_types: [];
+			account_types: any[];
 			maxpage?: number;
 			page?: number;
 		} = {
@@ -69,9 +71,7 @@ export class AccountTypes {
 			queryOptions.take = limit;
 		}
 		data.account_types =
-			await Elumian.prisma.account_type.findMany(
-				queryOptions,
-			);
+			await this.prisma.account_type.findMany(queryOptions);
 		return {
 			status: 200,
 			type: "SUCCESS",
@@ -101,7 +101,7 @@ export class AccountTypes {
 			},
 		};
 		const message =
-			await Elumian.prisma.account_type.findFirst(
+			await this.prisma.account_type.findFirst(
 				queryOptions,
 			);
 		return {

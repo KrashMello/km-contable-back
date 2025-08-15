@@ -11,17 +11,18 @@ import {
 	ValidateQuery,
 } from "elumian/common/decorators";
 import { HttpExceptions } from "elumian/common/exceptions";
-import { Elumian } from "elumian/core";
 import { createBodySchema } from "./validationSchema/create.schema";
+import { Categories } from "./categories.service";
 
 @Controller("categories")
 export class CategoriesController {
+	constructor(private categories: Categories) {}
 	@Get("/")
 	@ValidateQuery(globalSearchQuery)
 	async findAll(request, response) {
 		const { search, limit, page } = request.query;
 		HttpExceptions(
-			await Elumian.Categories.findAll(request.user_id, {
+			await this.categories.findAll(request.user_id, {
 				search,
 				limit: +limit,
 				page: +page,
@@ -35,7 +36,7 @@ export class CategoriesController {
 		const { id } = request.params;
 
 		HttpExceptions(
-			await Elumian.Categories.findOne(request.user_id, {
+			await this.categories.findOne(request.user_id, {
 				id: +id,
 			}),
 		);
@@ -46,7 +47,7 @@ export class CategoriesController {
 	async create(request, response) {
 		const { name, transaction_type_id } = request.body;
 		HttpExceptions(
-			await Elumian.Categories.create(request.user_id, {
+			await this.categories.create(request.user_id, {
 				name,
 				transaction_type_id: +transaction_type_id,
 			}),

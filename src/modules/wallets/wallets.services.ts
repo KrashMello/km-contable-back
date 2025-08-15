@@ -1,12 +1,13 @@
 import { Service } from "elumian/common/decorators";
 import { Prisma } from "@prisma/client";
-import { Elumian } from "elumian/core";
 import { HttpExceptions } from "elumian/common/exceptions";
-@Service
+import { PrismaService } from "../prisma/prisma.service";
+@Service()
 export class Wallets {
+	constructor(private prisma: PrismaService) {}
 	async count(user_id: number, args: { search: string }) {
 		const { search } = args;
-		return await Elumian.prisma.wallets.count({
+		return await this.prisma.wallets.count({
 			where: {
 				OR: [
 					{
@@ -58,7 +59,7 @@ export class Wallets {
 			},
 		};
 		const data: {
-			wallets: [];
+			wallets: any[];
 			maxpage?: number;
 			page?: number;
 		} = {
@@ -85,7 +86,7 @@ export class Wallets {
 			queryOptions.take = limit;
 		}
 		data.wallets =
-			await Elumian.prisma.wallets.findMany(queryOptions);
+			await this.prisma.wallets.findMany(queryOptions);
 		return {
 			status: 200,
 			type: "SUCCESS",
@@ -159,7 +160,7 @@ export class Wallets {
 				account_type_id: { equals: account_type_id },
 			});
 		const message =
-			await Elumian.prisma.wallets.findFirst(queryOptions);
+			await this.prisma.wallets.findFirst(queryOptions);
 		return {
 			status: 200,
 			type: "SUCCESS",
@@ -192,7 +193,7 @@ export class Wallets {
 			},
 		};
 		const createData =
-			await Elumian.prisma.wallets.create(queryOptions);
+			await this.prisma.wallets.create(queryOptions);
 		const walletData = await this.findOne(user_id, {
 			id: createData.id,
 		});
@@ -236,7 +237,7 @@ export class Wallets {
 				id,
 			},
 		};
-		await Elumian.prisma.wallets.update(queryOptions);
+		await this.prisma.wallets.update(queryOptions);
 		const walletData = await this.findOne(user_id, {
 			id,
 		});

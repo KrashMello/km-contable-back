@@ -2,9 +2,11 @@ import { Prisma } from "@prisma/client";
 import { Service } from "elumian/common/decorators";
 import { HttpExceptions } from "elumian/common/exceptions";
 import { Elumian } from "elumian/core";
+import { PrismaService } from "../prisma/prisma.service";
 
-@Service
+@Service()
 export class Categories {
+	constructor(private prisma: PrismaService) {}
 	async count(args: { search: string }) {
 		const { search } = args;
 		const queryOptions: Prisma.categoriesCountArgs = {
@@ -22,9 +24,7 @@ export class Categories {
 				],
 			},
 		};
-		return await Elumian.prisma.category.count(
-			queryOptions,
-		);
+		return await this.prisma.categories.count(queryOptions);
 	}
 
 	async findAll(
@@ -40,11 +40,16 @@ export class Categories {
 			select: {
 				id: true,
 				name: true,
+				transaction_type_id: true,
+				transaction_types: {
+					select: {
+						name: true,
+					},
+				},
 			},
-			where: {},
 		};
 		const data: {
-			categories: [];
+			categories: Array<any>;
 			maxpage?: number;
 			page?: number;
 		} = {
@@ -56,6 +61,15 @@ export class Categories {
 					{
 						name: {
 							contains: search,
+							mode: "insensitive",
+						},
+					},
+					{
+						transaction_types: {
+							name: {
+								contains: search,
+								mode: "insensitive",
+							},
 						},
 					},
 				],
@@ -88,16 +102,24 @@ export class Categories {
 			queryOptions.take = limit;
 		}
 		data.categories =
-			await Elumian.prisma.categories.findMany(
-				queryOptions,
-			);
+			await this.prisma.categories.findMany(queryOptions);
+		data.categories = data.categories.map(
+			(category: any) => {
+				return {
+					id: category.id,
+					name: category.name,
+					transaction_type_id: category.transaction_type_id,
+					transaction_type_name:
+						category.transaction_types.name,
+				};
+			},
+		);
 		return {
 			status: 200,
 			type: "SUCCESS",
 			message: data,
 		};
 	}
-
 	async findOne(
 		user_id: number,
 		args: {
@@ -194,9 +216,7 @@ export class Categories {
 				},
 			});
 		const message =
-			await Elumian.prisma.categories.findFirst(
-				queryOptions,
-			);
+			await this.prisma.categories.findFirst(queryOptions);
 		return {
 			status: 200,
 			type: "SUCCESS",
@@ -222,7 +242,6 @@ export class Categories {
 			is_global: false,
 			type: "OR",
 		});
-		console.log(existsName);
 		if (existsName.message)
 			HttpExceptions({
 				status: 400,
@@ -247,7 +266,7 @@ export class Categories {
 			},
 		};
 		const message =
-			await Elumian.prisma.categories.create(queryOptions);
+			await this.prisma.categories.create(queryOptions);
 		return {
 			status: 200,
 			type: "SUCCESS",

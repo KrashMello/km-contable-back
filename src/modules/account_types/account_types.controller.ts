@@ -9,16 +9,17 @@ import {
 	ValidateQuery,
 } from "elumian/common/decorators";
 import { HttpExceptions } from "elumian/common/exceptions";
-import { Elumian } from "elumian/core";
+import { AccountTypes } from "./account_types.service";
 
 @Controller("account_types")
 export class AccountTypesController {
+	constructor(private accountTypes: AccountTypes) {}
 	@Get("/")
 	@ValidateQuery(globalSearchQuery)
 	async findAll(req, res) {
 		const { search, limit, page } = req.query;
 		HttpExceptions(
-			await Elumian.AccountTypes.findAll({
+			await this.accountTypes.findAll({
 				search,
 				limit: +limit,
 				page: +page,
@@ -31,7 +32,7 @@ export class AccountTypesController {
 	async findOne(req, res) {
 		const { id } = req.params;
 		HttpExceptions(
-			await Elumian.AccountTypes.findOne({ id: +id }),
+			await this.accountTypes.findOne({ id: +id }),
 		);
 	}
 }

@@ -9,16 +9,17 @@ import {
 	ValidateQuery,
 } from "elumian/common/decorators";
 import { HttpExceptions } from "elumian/common/exceptions";
-import { Elumian } from "elumian/core";
+import { Currencies } from "./currencies.service";
 
 @Controller("currencies")
 export class CurrenciesController {
+	constructor(private currencies: Currencies) {}
 	@Get("/")
 	@ValidateQuery(globalSearchQuery)
 	async findAll(req, res) {
 		const { search, limit, page } = req.query;
 		HttpExceptions(
-			await Elumian.Currencies.findAll({
+			await this.currencies.findAll({
 				search,
 				limit: +limit,
 				page: +page,
@@ -31,7 +32,7 @@ export class CurrenciesController {
 	async findOne(req, res) {
 		const { id } = req.params;
 		HttpExceptions(
-			await Elumian.Currencies.findOne({ id: +id }),
+			await this.currencies.findOne({ id: +id }),
 		);
 	}
 }

@@ -1,10 +1,11 @@
 import { Service } from "elumian/common/decorators";
-import { Elumian } from "elumian/core";
 import { Prisma } from "@prisma/client";
 import { HttpExceptions } from "elumian/common/exceptions";
+import { PrismaService } from "../prisma/prisma.service";
 
-@Service
+@Service()
 export class Currencies {
+	constructor(private prisma: PrismaService) {}
 	async count(args: { search: string }) {
 		const { search } = args;
 		const queryOptions: Prisma.currenciesCountArgs = {
@@ -18,7 +19,7 @@ export class Currencies {
 				],
 			},
 		};
-		return await Elumian.prisma.currencies.count();
+		return await this.prisma.currencies.count();
 	}
 
 	async findAll(args: {
@@ -36,7 +37,7 @@ export class Currencies {
 			where: {},
 		};
 		const data: {
-			currencies: [];
+			currencies: any[];
 			maxpage?: number;
 			page?: number;
 		} = {
@@ -62,9 +63,7 @@ export class Currencies {
 			queryOptions.take = limit;
 		}
 		data.currencies =
-			await Elumian.prisma.currencies.findMany(
-				queryOptions,
-			);
+			await this.prisma.currencies.findMany(queryOptions);
 		return {
 			status: 200,
 			type: "SUCCESS",
@@ -95,9 +94,7 @@ export class Currencies {
 			},
 		};
 		const message =
-			await Elumian.prisma.currencies.findFirst(
-				queryOptions,
-			);
+			await this.prisma.currencies.findFirst(queryOptions);
 		return {
 			status: 200,
 			type: "SUCCESS",

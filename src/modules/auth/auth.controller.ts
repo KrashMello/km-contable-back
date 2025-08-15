@@ -3,15 +3,16 @@ import {
 	Post,
 } from "elumian/common/decorators";
 import { HttpExceptions } from "elumian/common/exceptions";
-import { Elumian } from "elumian/core";
+import { Auth } from "./auth.service";
 
 @Controller("auth")
 export class AuthController {
+	constructor(private auth: Auth) {}
 	@Post("/signin")
 	async signin(req, res) {
 		const { username, password } = req.body;
 		HttpExceptions(
-			await Elumian.Auth.signin({ username, password }),
+			await this.auth.signin({ username, password }),
 		);
 	}
 }

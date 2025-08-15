@@ -1,14 +1,15 @@
 import { Service } from "elumian/common/decorators";
-import { Elumian } from "elumian/core";
 import { Prisma } from "@prisma/client";
 import { HttpExceptions } from "elumian/common/exceptions";
 import bcrypt from "bcrypt";
+import { PrismaService } from "../prisma/prisma.service";
 
-@Service
+@Service()
 export class Users {
+	constructor(private prisma: PrismaService) {}
 	async count(args: { search: string }) {
 		const { search } = args;
-		return await Elumian.prisma.users.count({
+		return await this.prisma.users.count({
 			where: {
 				OR: [
 					{
@@ -61,7 +62,7 @@ export class Users {
 			queryOptions.take = limit;
 		}
 		data.users =
-			await Elumian.prisma.users.findMany(queryOptions);
+			await this.prisma.users.findMany(queryOptions);
 		return {
 			status: 200,
 			type: "SUCCESS",
@@ -92,7 +93,7 @@ export class Users {
 			},
 		};
 		const response =
-			await Elumian.prisma.users.findFirst(queryOptions);
+			await this.prisma.users.findFirst(queryOptions);
 
 		return response.password;
 	}
@@ -128,7 +129,7 @@ export class Users {
 				email: { equals: email },
 			});
 		const message =
-			await Elumian.prisma.users.findFirst(queryOptions);
+			await this.prisma.users.findFirst(queryOptions);
 
 		return {
 			status: 200,
@@ -159,7 +160,7 @@ export class Users {
 			},
 		};
 		const createData =
-			await Elumian.prisma.users.create(queryOptions);
+			await this.prisma.users.create(queryOptions);
 		const userData = await this.findOne({
 			id: createData.id,
 		});
@@ -193,7 +194,7 @@ export class Users {
 				id,
 			},
 		};
-		await Elumian.prisma.users.update(queryOptions);
+		await this.prisma.users.update(queryOptions);
 		const userData = await this.findOne({
 			id,
 		});
