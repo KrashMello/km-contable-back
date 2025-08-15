@@ -1,10 +1,11 @@
 import { Prisma } from "@prisma/client";
 import { Service } from "elumian/common/decorators";
 import { HttpExceptions } from "elumian/common/exceptions";
-import { Elumian } from "elumian/core";
+import { PrismaService } from "../prisma/prisma.service";
 
-@Service
+@Service()
 export class TransactionTypes {
+	constructor(private prisma: PrismaService) {}
 	async count(args: { search: string }) {
 		const { search } = args;
 		const queryOptions: Prisma.transaction_typesCountArgs =
@@ -23,7 +24,7 @@ export class TransactionTypes {
 					],
 				},
 			};
-		return await Elumian.prisma.transaction_types.count(
+		return await this.prisma.transaction_types.count(
 			queryOptions,
 		);
 	}
@@ -43,7 +44,7 @@ export class TransactionTypes {
 				where: {},
 			};
 		const data: {
-			transaction_types: [];
+			transaction_types: any[];
 			maxpage?: number;
 			page?: number;
 		} = {
@@ -72,7 +73,7 @@ export class TransactionTypes {
 			queryOptions.take = limit;
 		}
 		data.transaction_types =
-			await Elumian.prisma.transaction_types.findMany(
+			await this.prisma.transaction_types.findMany(
 				queryOptions,
 			);
 		return {
@@ -105,7 +106,7 @@ export class TransactionTypes {
 				},
 			};
 		const message =
-			await Elumian.prisma.transaction_types.findFirst(
+			await this.prisma.transaction_types.findFirst(
 				queryOptions,
 			);
 		return {

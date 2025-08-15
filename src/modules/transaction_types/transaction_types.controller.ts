@@ -9,16 +9,17 @@ import {
 	ValidateQuery,
 } from "elumian/common/decorators";
 import { HttpExceptions } from "elumian/common/exceptions";
-import { Elumian } from "elumian/core";
+import { TransactionTypes } from "./transaction_types.service";
 
 @Controller("transaction_types")
 export class TransactionTypesController {
+	constructor(private transactionTypes: TransactionTypes) {}
 	@Get("/")
 	@ValidateQuery(globalSearchQuery)
 	async findAll(req, res) {
 		const { search, limit, page } = req.query;
 		HttpExceptions(
-			await Elumian.TransactionTypes.findAll({
+			await this.transactionTypes.findAll({
 				search,
 				limit: +limit,
 				page: +page,
@@ -31,7 +32,7 @@ export class TransactionTypesController {
 	async findOne(req, res) {
 		const { id } = req.params;
 		HttpExceptions(
-			await Elumian.TransactionTypes.findOne({ id: +id }),
+			await this.transactionTypes.findOne({ id: +id }),
 		);
 	}
 }
