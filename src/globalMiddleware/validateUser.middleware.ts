@@ -13,6 +13,14 @@ export class ValidateUserMiddleware {
 		);
 		if (isPublic) return true;
 		else {
+			const api_key = request.get("km-api-key");
+			if (api_key) {
+				const apiData =
+					await Elumian.ApiKeys.getUserId(api_key);
+				request.user_id = apiData.user_id;
+				return true;
+			}
+
 			const token = request.get("km-access-token");
 			if (!token)
 				HttpExceptions({
