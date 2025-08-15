@@ -1,9 +1,9 @@
 {
-  "name": "transaction",
+  "name": "api_keys",
   "requests": [
     {
       "name": "create",
-      "url": "{{BASE_URL}}/transaction/",
+      "url": "{{BASE_URL}}/api_keys/",
       "method": "POST",
       "params": [],
       "headers": [
@@ -48,18 +48,9 @@
             "km-access-token",
             "{{TOKEN}}"
           ]
-        },
-        {
-          "enabled": true,
-          "data": [
-            "content-type",
-            "application/json"
-          ]
         }
       ],
-      "body": {
-        "json": "{\n\"wallet_id\": \"1\",\n\"category_id\":\"1\",\n\"description\":\"este es el salario\",\n\"amount\":\"50000\",\n\"date\":\"2025/02/08\"\n} "
-      },
+      "body": "no_body",
       "auth": "no_auth",
       "scripts": {
         "pre_request_script": null,
